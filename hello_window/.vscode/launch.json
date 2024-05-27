@@ -1,0 +1,32 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug hello_x11",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/hello_x11",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "cmake_build_all",
+        },
+        {
+            "name": "Debug hello_wayland",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/hello_wayland",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "cmake_build_all",
+        },
+        {
+            "name": "Debug hello_sdl",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/hello_sdl",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "cmake_build_all",
+        }
+    ]
+}
