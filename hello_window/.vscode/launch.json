@@ -20,10 +20,10 @@
             "preLaunchTask": "cmake_build_all",
         },
         {
-            "name": "Debug hello_sdl",
+            "name": "Debug hello_sdl2",
             "type": "lldb",
             "request": "launch",
-            "program": "${workspaceFolder}/build/hello_sdl",
+            "program": "${workspaceFolder}/build/hello_sdl2",
             "args": [],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "cmake_build_all",
