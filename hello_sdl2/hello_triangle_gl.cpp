@@ -1,10 +1,8 @@
 // Hello, OpenGL triangle!
 
-#include <SDL2/SDL.h>
-
-#ifdef _WIN32
 #include <glad/glad.h>
-#endif
+
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
 #include <array>
@@ -127,12 +125,10 @@ int main(int argc, char* argv[])
     SDL_GL_MakeCurrent(window, gl_context);
     SDL_GL_SetSwapInterval(disable_vsync ? 0 : 1);
 
-#ifdef _WIN32
     if (!gladLoadGL()) {
         SDL_Log("Could not load GLAD");
         return -1;
     }
-#endif
 
     GLuint program = CompileShader(VERTEXT_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
     if (!program) {
