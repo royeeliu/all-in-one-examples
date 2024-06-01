@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "hello_triangle debug",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/hello_triangle",
+            "args": [
+                //"--disable-hwaccel",
+                //"--disable-vsync",
+            ],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "cmake_build_all",
+        },
+    ]
+}
