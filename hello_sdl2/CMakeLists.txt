@@ -16,7 +16,14 @@ endif()
 project(hello_sdl2)
 
 find_package(SDL2 CONFIG REQUIRED)
+include_directories(${SDL2_INCLUDE_DIRS})
+link_libraries(${SDL2_LIBRARIES})
 
 add_executable(hello_triangle hello_triangle.cpp)
-target_include_directories(hello_triangle PRIVATE ${SDL2_INCLUDE_DIRS})
-target_link_libraries(hello_triangle PRIVATE ${SDL2_LIBRARIES})
+add_executable(hello_triangle_gl hello_triangle_gl.cpp)
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    add_subdirectory(third_party/glad)
+    target_include_directories(hello_triangle_gl PRIVATE third_party/glad/include)
+    target_link_libraries(hello_triangle_gl PRIVATE glad)
+endif()

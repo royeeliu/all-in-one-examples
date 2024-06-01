@@ -13,5 +13,16 @@
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "cmake_build_all",
         },
+        {
+            "name": "hello_triangle_gl debug",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/hello_triangle_gl",
+            "args": [
+                // "--disable-vsync",
+            ],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "cmake_build_all",
+        },
     ]
 }
