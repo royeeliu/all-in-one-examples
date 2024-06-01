@@ -10,7 +10,10 @@
 			],
 			"group": "build",
 			"problemMatcher": [],
-			"detail": "CMake build all"
+			"detail": "CMake build all",
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			}
 		}
 	]
 }
