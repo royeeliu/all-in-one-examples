@@ -7,7 +7,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/hello_triangle",
             "args": [
-                //"--disable-hwaccel",
+                //"--render-driver=gl",
                 //"--disable-vsync",
             ],
             "cwd": "${workspaceFolder}",

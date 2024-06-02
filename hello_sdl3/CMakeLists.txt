@@ -16,8 +16,8 @@ target_link_libraries(hello_triangle_gl PRIVATE glad)
 # This is safe to set on all platforms. Otherwise your SDL app will have a
 # terminal window pop up with it on Windows. Must include SDL3/SDL_main.h to use
 # this.
-set_property(TARGET hello_triangle PROPERTY WIN32_EXECUTABLE TRUE)
-set_property(TARGET hello_triangle_gl PROPERTY WIN32_EXECUTABLE TRUE)
+# set_property(TARGET hello_triangle PROPERTY WIN32_EXECUTABLE TRUE)
+# set_property(TARGET hello_triangle_gl PROPERTY WIN32_EXECUTABLE TRUE)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
   set(SDL3_DLL SDL3.dll)
