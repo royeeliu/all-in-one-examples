@@ -99,6 +99,7 @@ int main(int argc, char* argv[])
         }
     }
 
+    SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
     SDL_Init(SDL_INIT_VIDEO);
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -186,8 +187,14 @@ int main(int argc, char* argv[])
             direction = 1.0;
         }
 
+        int width = 0;
+        int height = 0;
+        SDL_GetWindowSize(window, &width, &height);
+
         glClearColor(0.06f, 0.0f, 0.06f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        glViewport(0, 0, width, height);
         glUseProgram(program);
         glUniform1f(offset_location, offset);
         glBindVertexArray(vao);

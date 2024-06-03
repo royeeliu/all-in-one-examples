@@ -35,7 +35,7 @@ static std::string GetRenderDriver(const char* arg)
     int count = SDL_GetNumRenderDrivers();
     for (int i = 0; i < count; ++i) {
         const char* name = SDL_GetRenderDriver(i);
-        SDL_LogVerbose(SDL_LOG_CATEGORY_APPLICATION, "Enumerate render driver[%d]: %s", i, name);
+        SDL_Log("Enumerate render driver[%d]: %s", i, name);
         if (result.empty() && strcmp(name, driver) == 0) {
             result = name;
         }
