@@ -2,6 +2,15 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "hello_sdl3 debug",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/hello_sdl3",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "cmake_build_all",
+        },
+        {
             "name": "hello_triangle debug",
             "type": "lldb",
             "request": "launch",
