@@ -1,5 +1,9 @@
 // Hello, OpenGL triangle!
+//
 
+#include "utils/performance.h"
+
+// glad.h should be included before SDL_opengl.h
 #include <glad/glad.h>
 
 #include <SDL3/SDL.h>
@@ -123,6 +127,8 @@ int main(int argc, char* argv[])
         return -1;
     }
 
+    SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+
     SDL_GLContext gl_context = SDL_GL_CreateContext(window);
     SDL_GL_MakeCurrent(window, gl_context);
     SDL_GL_SetSwapInterval(disable_vsync ? 0 : 1);
@@ -163,6 +169,7 @@ int main(int argc, char* argv[])
     GLfloat direction = 1.0f;
 
     GLint offset_location = glGetUniformLocation(program, "offset");
+    Performance performance;
 
     while (true) {
         SDL_Event event{};
@@ -201,6 +208,9 @@ int main(int argc, char* argv[])
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         SDL_GL_SwapWindow(window);
+
+        performance.IncreaseFrameCount();
+        performance.PrintEverySecond();
     }
 
     glDeleteVertexArrays(1, &vao);

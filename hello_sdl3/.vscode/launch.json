@@ -28,7 +28,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/hello_triangle_gl",
             "args": [
-                // "--disable-vsync",
+                "--disable-vsync",
             ],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "cmake_build_all",

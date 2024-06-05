@@ -1,5 +1,8 @@
+#include "utils/performance.h"
+
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+
 #include <array>
 #include <map>
 #include <string>
@@ -66,6 +69,8 @@ int main(int argc, char* argv[])
         return -1;
     }
 
+    SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+
     SDL_Renderer* renderer =
         SDL_CreateRenderer(window, render_driver.empty() ? nullptr : render_driver.c_str());
     if (!renderer) {
@@ -83,6 +88,8 @@ int main(int argc, char* argv[])
         SDL_Vertex{{300, 300}, {0.0f, 0.0f, 1.0f, 1.0f}}   // right bottom
     };
 
+    Performance performance;
+    uint64_t begin_ticks = SDL_GetTicks();
     uint64_t last_tickets = SDL_GetTicks();
     float position = 0.0f;
     float direction = 1.0f;
@@ -122,6 +129,9 @@ int main(int argc, char* argv[])
         SDL_RenderClear(renderer);
         SDL_RenderGeometry(renderer, nullptr, vertices.data(), vertices.size(), nullptr, 0);
         SDL_RenderPresent(renderer);
+
+        performance.IncreaseFrameCount();
+        performance.PrintEverySecond();
     }
 
     SDL_DestroyRenderer(renderer);
