@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
 project(hello_sdl3)
 
-add_subdirectory(third_party/glad EXCLUDE_FROM_ALL)
 add_subdirectory(third_party/SDL3 EXCLUDE_FROM_ALL)
+include_directories(third_party/SDL3/include)
+
+add_subdirectory(third_party/glad EXCLUDE_FROM_ALL)
 add_subdirectory(utils)
 
-include_directories(${SDL2_INCLUDE_DIRS})
 link_libraries(SDL3::SDL3 utils)
 
 add_executable(hello_sdl3 hello_sdl3.cpp)

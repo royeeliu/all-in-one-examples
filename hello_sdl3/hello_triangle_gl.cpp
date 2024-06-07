@@ -1,6 +1,7 @@
 // Hello, OpenGL triangle!
 //
 
+#include "utils/command_line.h"
 #include "utils/performance.h"
 
 // glad.h should be included before SDL_opengl.h
@@ -92,15 +93,10 @@ static GLuint CompileShader(const char* vs, const char* fs)
 
 int main(int argc, char* argv[])
 {
-    bool disable_vsync = false;
-    for (int i = 1; i < argc; ++i) {
-        if (strcmp(argv[i], "--disable-vsync") == 0) {
-            disable_vsync = true;
-        }
-    }
-
     SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
     SDL_Init(SDL_INIT_VIDEO);
+
+    CommandLine command_line(argc, argv);
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
@@ -127,7 +123,7 @@ int main(int argc, char* argv[])
 
     SDL_GLContext gl_context = SDL_GL_CreateContext(window);
     SDL_GL_MakeCurrent(window, gl_context);
-    SDL_GL_SetSwapInterval(disable_vsync ? 0 : 1);
+    SDL_GL_SetSwapInterval(command_line.IsDisableVsync() ? 0 : 1);
 
     if (!gladLoadGL()) {
         SDL_Log("Could not load GLAD");

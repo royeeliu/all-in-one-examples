@@ -1,67 +1,18 @@
+#include "utils/command_line.h"
 #include "utils/performance.h"
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
 #include <array>
-#include <map>
-#include <string>
 #include <vector>
-
-constexpr char kRenderDriverArg[] = "--render-driver=";
-
-static const std::map<std::string, const char*> kRenderDriverMap = {
-    {"d3d9", "direct3d"},      //
-    {"d3d11", "direct3d11"},   //
-    {"d3d12", "direct3d12"},   //
-    {"gl", "opengl"},          //
-    {"gles", "opengles2"},     //
-    {"vulkan", "vulkan"},      //
-    {"metal", "metal"},        //
-    {"software", "software"},  //
-};
-
-static std::string GetRenderDriver(const char* arg)
-{
-    if (!arg) {
-        return "";
-    }
-
-    auto it = kRenderDriverMap.find(arg);
-    if (it == kRenderDriverMap.end()) {
-        return "";
-    }
-
-    const char* driver = it->second;
-    std::string result;
-
-    int count = SDL_GetNumRenderDrivers();
-    for (int i = 0; i < count; ++i) {
-        const char* name = SDL_GetRenderDriver(i);
-        SDL_Log("Enumerate render driver[%d]: %s", i, name);
-        if (result.empty() && strcmp(name, driver) == 0) {
-            result = name;
-        }
-    }
-
-    return result;
-}
 
 int main(int argc, char* argv[])
 {
     SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
     SDL_Init(SDL_INIT_VIDEO);
 
-    std::string render_driver;
-    bool disable_vsync = false;
-    for (int i = 1; i < argc; ++i) {
-        if (strncmp(argv[i], kRenderDriverArg, strlen(kRenderDriverArg)) == 0) {
-            render_driver = GetRenderDriver(argv[i] + strlen(kRenderDriverArg));
-            SDL_Log("Select render driver: %s", render_driver.c_str());
-        } else if (strcmp(argv[i], "--disable-vsync") == 0) {
-            disable_vsync = true;
-        }
-    }
+    CommandLine command_line(argc, argv);
 
     SDL_Window* window = SDL_CreateWindow("Hello, Triangle!", 800, 600, SDL_WINDOW_RESIZABLE);
     if (!window) {
@@ -71,14 +22,13 @@ int main(int argc, char* argv[])
 
     SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 
-    SDL_Renderer* renderer =
-        SDL_CreateRenderer(window, render_driver.empty() ? nullptr : render_driver.c_str());
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, command_line.GetRenderDriver());
     if (!renderer) {
         SDL_Log("Create renderer failed: %s", SDL_GetError());
         return -1;
     }
 
-    int vsync = disable_vsync ? 0 : 1;
+    int vsync = command_line.IsDisableVsync() ? 0 : 1;
     SDL_SetRenderVSync(renderer, vsync);
     SDL_Log("VSync: %d", vsync);
 

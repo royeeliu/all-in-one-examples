@@ -3,7 +3,7 @@
 #include <chrono>
 #include <cstdint>
 
-class Performance
+class Performance final
 {
 public:
     Performance();
