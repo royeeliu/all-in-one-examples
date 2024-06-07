@@ -28,7 +28,19 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/hello_triangle_gl",
             "args": [
-                "--disable-vsync",
+                // "--disable-vsync",
+            ],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "cmake_build_all",
+        },
+        {
+            "name": "hello_texture debug",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/hello_texture",
+            "args": [
+                // "--render-driver=gl",
+                // "--disable-vsync",
             ],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "cmake_build_all",

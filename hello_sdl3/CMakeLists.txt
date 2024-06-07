@@ -11,6 +11,7 @@ link_libraries(SDL3::SDL3 utils)
 add_executable(hello_sdl3 hello_sdl3.cpp)
 add_executable(hello_triangle hello_triangle.cpp)
 add_executable(hello_triangle_gl hello_triangle_gl.cpp)
+add_executable(hello_texture hello_texture.cpp)
 
 target_include_directories(hello_triangle_gl PRIVATE third_party/glad/include)
 target_link_libraries(hello_triangle_gl PRIVATE glad)

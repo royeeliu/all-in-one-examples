@@ -10,10 +10,6 @@
 #include <SDL3/SDL_main.h>
 #include <SDL3/SDL_opengl.h>
 
-#include <array>
-#include <iostream>
-#include <vector>
-
 constexpr char VERTEXT_SHADER_SOURCE[] = R"(#version 330 core
 layout (location = 0) in vec3 aPos;
 uniform float offset;
@@ -44,7 +40,7 @@ static bool CheckCompileErrors(GLuint shader)
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
     if (!success) {
         glGetShaderInfoLog(shader, 512, nullptr, info_log);
-        std::cerr << "ERROR::SHADER::COMPILATION_FAILED\n" << info_log << "\n";
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Compile shared failed: %s", info_log);
     }
     return success;
 }
@@ -56,7 +52,7 @@ bool CheckLinkErrors(GLuint program)
     glGetProgramiv(program, GL_LINK_STATUS, &success);
     if (!success) {
         glGetProgramInfoLog(program, 512, nullptr, info_log);
-        std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << info_log << std::endl;
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Link program failed: %s", info_log);
     }
     return success;
 }
