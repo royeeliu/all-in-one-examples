@@ -133,6 +133,14 @@ int main(int argc, char* argv[])
         performance.PrintEverySecond();
     }
 
+    SDL_DestroyTexture(texture);
+
+    // SDL will free the d3d Dlls when the renderer is destroyed, so we need to release all d3d
+    // resources before that.
+    d3d11_texture.Reset();
+    d3d11_context.Reset();
+    d3d11_device.Reset();
+
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
