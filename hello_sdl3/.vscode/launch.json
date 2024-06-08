@@ -45,5 +45,16 @@
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "cmake_build_all",
         },
+        {
+            "name": "interop_with_d3d11 debug",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/interop_with_d3d11",
+            "args": [
+                "--disable-vsync",
+            ],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "cmake_build_all",
+        },
     ]
 }

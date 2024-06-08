@@ -1,3 +1,4 @@
+#include "constants.h"
 #include "utils/command_line.h"
 #include "utils/performance.h"
 
@@ -14,7 +15,7 @@ int main(int argc, char* argv[])
 
     CommandLine command_line(argc, argv);
 
-    SDL_Window* window = SDL_CreateWindow("Hello, Triangle!", 800, 600, SDL_WINDOW_RESIZABLE);
+    SDL_Window* window = SDL_CreateWindow("Hello, Triangle!", WIDTH, HEIGHT, SDL_WINDOW_RESIZABLE);
     if (!window) {
         SDL_Log("Could not create a window: %s", SDL_GetError());
         return -1;

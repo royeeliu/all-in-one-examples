@@ -1,6 +1,7 @@
 // Hello, OpenGL triangle!
 //
 
+#include "constants.h"
 #include "utils/command_line.h"
 #include "utils/performance.h"
 
@@ -112,7 +113,7 @@ int main(int argc, char* argv[])
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
     SDL_Window* window =
-        SDL_CreateWindow("Hello, OpenGL triangle!", 800, 600,
+        SDL_CreateWindow("Hello, OpenGL triangle!", WIDTH, HEIGHT,
                          SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL | SDL_WINDOW_HIGH_PIXEL_DENSITY);
     if (!window) {
         SDL_Log("Could not create a window: %s", SDL_GetError());

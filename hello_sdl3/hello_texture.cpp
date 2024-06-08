@@ -1,3 +1,4 @@
+#include "constants.h"
 #include "utils/command_line.h"
 #include "utils/performance.h"
 
@@ -11,7 +12,7 @@ int main(int argc, char* argv[])
 
     CommandLine command_line(argc, argv);
 
-    SDL_Window* window = SDL_CreateWindow("Hello, Texture!", 800, 600, SDL_WINDOW_RESIZABLE);
+    SDL_Window* window = SDL_CreateWindow("Hello, Texture!", WIDTH, HEIGHT, SDL_WINDOW_RESIZABLE);
     if (!window) {
         SDL_Log("Could not create a window: %s", SDL_GetError());
         return -1;
@@ -25,17 +26,23 @@ int main(int argc, char* argv[])
         return -1;
     }
 
+    SDL_RendererInfo info;
+    SDL_GetRendererInfo(renderer, &info);
+    for (int i = 0; i < info.num_texture_formats; ++i) {
+        SDL_Log("Texture format[%d]: %s", i, SDL_GetPixelFormatName(info.texture_formats[i]));
+    }
+
     int vsync = command_line.IsDisableVsync() ? 0 : 1;
     SDL_SetRenderVSync(renderer, vsync);
     SDL_Log("VSync: %d", vsync);
 
     uint8_t pixels[4 * 2 * 2] = {
-        255, 0,   0,   255,  // r, g, b, a
+        0,   0,   255, 255,  // b, g, r, a
         0,   255, 0,   255,  //
-        0,   0,   255, 255,  //
-        255, 255, 0,   255   //
+        255, 0,   0,   255,  //
+        0,   255, 255, 255   //
     };
-    SDL_Surface* surface = SDL_CreateSurfaceFrom(pixels, 2, 2, 4 * 2, SDL_PIXELFORMAT_ABGR8888);
+    SDL_Surface* surface = SDL_CreateSurfaceFrom(pixels, 2, 2, 4 * 2, SDL_PIXELFORMAT_ARGB8888);
     if (!surface) {
         SDL_Log("Create surface failed: %s", SDL_GetError());
         return -1;
