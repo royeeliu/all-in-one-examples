@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
+
 project(hello_sdl3)
+set(CMAKE_CXX_STANDARD 20)
 
 add_subdirectory(third_party/SDL3 EXCLUDE_FROM_ALL)
 include_directories(third_party/SDL3/include)
@@ -30,6 +32,8 @@ target_link_libraries(hello_triangle_gl PRIVATE glad)
 # Copy the DLLs to the output directory
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(SDL3_DLL SDL3.dll)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set(SDL3_DLL libSDL3.dylib)
 else()
     set(SDL3_DLL libSDL3.so)
 endif()

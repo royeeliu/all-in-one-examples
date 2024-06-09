@@ -11,6 +11,7 @@ int main(int argc, char* argv[])
         SDL_Log("Could not create a window: %s", SDL_GetError());
         return -1;
     }
+    SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 
     SDL_Renderer* renderer = SDL_CreateRenderer(window, nullptr);
     if (!renderer) {

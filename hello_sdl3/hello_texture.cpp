@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 
         int width = 0;
         int height = 0;
-        SDL_GetWindowSize(window, &width, &height);
+        SDL_GetRenderOutputSize(renderer, &width, &height);
         SDL_FRect dst_rect{};
         dst_rect.w = width * 0.5f;
         dst_rect.h = height * 0.5f;

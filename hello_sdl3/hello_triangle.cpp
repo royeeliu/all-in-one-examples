@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
         position += 200.0f * delta_time * direction;
 
         int width = 0;
-        SDL_GetWindowSize(window, &width, nullptr);
+        SDL_GetRenderOutputSize(renderer, &width, nullptr);
         float max_position = static_cast<float>(width) -
                              (origin_vertices[2].position.x - origin_vertices[1].position.x);
 

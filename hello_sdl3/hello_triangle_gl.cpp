@@ -189,7 +189,7 @@ int main(int argc, char* argv[])
 
         int width = 0;
         int height = 0;
-        SDL_GetWindowSize(window, &width, &height);
+        SDL_GetWindowSizeInPixels(window, &width, &height);
 
         glClearColor(0.06f, 0.0f, 0.06f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);

@@ -16,8 +16,8 @@
             "request": "launch",
             "program": "${workspaceFolder}/build/hello_triangle",
             "args": [
-                //"--render-driver=gl",
-                //"--disable-vsync",
+                // "--render-driver=metal",
+                // "--disable-vsync",
             ],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "cmake_build_all",
