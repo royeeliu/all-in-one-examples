@@ -2,10 +2,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "hello_sdl3 debug",
+            "name": "hello_window debug",
             "type": "lldb",
             "request": "launch",
-            "program": "${workspaceFolder}/build/hello_sdl3",
+            "program": "${workspaceFolder}/build/hello_window",
             "args": [],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "cmake_build_all",

@@ -11,7 +11,11 @@
 int main(int argc, char* argv[])
 {
     SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
-    SDL_Init(SDL_INIT_VIDEO);
+
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        SDL_Log("SDL_Init failed: %s", SDL_GetError());
+        return -1;
+    }
 
     CommandLine command_line(argc, argv);
 
@@ -45,11 +49,21 @@ int main(int argc, char* argv[])
     float position = 0.0f;
     float direction = 1.0f;
 
-    while (true) {
-        SDL_Event event{};
-        SDL_PollEvent(&event);
-        if (event.type == SDL_EVENT_QUIT) {
-            break;
+    SDL_Event event{};
+    bool keep_going = true;
+
+    while (keep_going) {
+        while (SDL_PollEvent(&event)) {
+            switch (event.type) {
+                case SDL_EVENT_QUIT:
+                    keep_going = false;
+                    break;
+
+                case SDL_EVENT_KEY_DOWN: {
+                    keep_going = keep_going && (event.key.keysym.sym != SDLK_ESCAPE);
+                    break;
+                }
+            }
         }
 
         uint64_t current_ticks = SDL_GetTicks();

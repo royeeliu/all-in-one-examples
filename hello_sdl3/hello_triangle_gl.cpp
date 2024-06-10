@@ -95,7 +95,11 @@ static GLuint CompileShader(const char* vs, const char* fs)
 int main(int argc, char* argv[])
 {
     SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
-    SDL_Init(SDL_INIT_VIDEO);
+
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        SDL_Log("SDL_Init failed: %s", SDL_GetError());
+        return -1;
+    }
 
     CommandLine command_line(argc, argv);
 
