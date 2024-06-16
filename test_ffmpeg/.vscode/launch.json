@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "testffmpeg debug",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/testffmpeg",
+            "args": [
+                //
+            ],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "cmake_build_all",
+        },
+    ]
+}
