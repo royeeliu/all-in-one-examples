@@ -54,7 +54,6 @@ void CommandLine::SelectRenderDriver(const char* driver)
     int count = SDL_GetNumRenderDrivers();
     for (int i = 0; i < count; ++i) {
         const char* name = SDL_GetRenderDriver(i);
-        SDL_Log("Enumerate render driver[%d]: %s", i, name);
         if (render_driver_.empty() && strcmp(name, driver_name) == 0) {
             render_driver_ = name;
         }

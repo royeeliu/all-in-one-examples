@@ -3,8 +3,12 @@ cmake_minimum_required(VERSION 3.10)
 project(hello_sdl3)
 set(CMAKE_CXX_STANDARD 20)
 
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/third_party/SDL3" EXCLUDE_FROM_ALL)
-include_directories(third_party/SDL3/include)
+set(THIRD_PARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../third_party")
+
+add_subdirectory("${THIRD_PARTY_DIR}/SDL3"
+    "${CMAKE_CURRENT_BINARY_DIR}/third_party/SDL3"
+    EXCLUDE_FROM_ALL)
+include_directories("${THIRD_PARTY_DIR}/SDL3/include")
 
 add_subdirectory(third_party/glad EXCLUDE_FROM_ALL)
 add_subdirectory(utils)

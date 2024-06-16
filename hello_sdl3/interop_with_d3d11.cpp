@@ -62,14 +62,8 @@ int main(int argc, char* argv[])
     SDL_SetRenderVSync(renderer, vsync);
     SDL_Log("VSync: %d", vsync);
 
-    SDL_RendererInfo info;
-    SDL_GetRendererInfo(renderer, &info);
-    for (int i = 0; i < info.num_texture_formats; ++i) {
-        SDL_Log("Texture format[%d]: %s", i, SDL_GetPixelFormatName(info.texture_formats[i]));
-    }
-
     ComPtr<ID3D11Device> d3d11_device = static_cast<ID3D11Device*>(SDL_GetProperty(
-        SDL_GetRendererProperties(renderer), SDL_PROP_RENDERER_D3D11_DEVICE_POINTER, NULL));
+        SDL_GetRendererProperties(renderer), SDL_PROP_RENDERER_D3D11_DEVICE_POINTER, nullptr));
     if (!d3d11_device) {
         SDL_Log("Get D3D11 device failed: %s", SDL_GetError());
         return -1;

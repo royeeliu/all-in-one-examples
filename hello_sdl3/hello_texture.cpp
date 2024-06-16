@@ -1,6 +1,7 @@
 #include "constants.h"
 #include "utils/command_line.h"
 #include "utils/performance.h"
+#include "utils/utils.h"
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
@@ -14,6 +15,7 @@ int main(int argc, char* argv[])
         return -1;
     }
 
+    PrintSupportedRenderDrivers();
     CommandLine command_line(argc, argv);
 
     SDL_Window* window = SDL_CreateWindow("Hello, Texture!", WIDTH, HEIGHT, SDL_WINDOW_RESIZABLE);
@@ -30,11 +32,7 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    SDL_RendererInfo info;
-    SDL_GetRendererInfo(renderer, &info);
-    for (int i = 0; i < info.num_texture_formats; ++i) {
-        SDL_Log("Texture format[%d]: %s", i, SDL_GetPixelFormatName(info.texture_formats[i]));
-    }
+    PrintSupportedTextureFormats(renderer);
 
     int vsync = command_line.IsDisableVsync() ? 0 : 1;
     SDL_SetRenderVSync(renderer, vsync);
