@@ -18,12 +18,11 @@ endif()
 project(test_ffmpeg)
 set(CMAKE_CXX_STANDARD 20)
 
-set(THIRD_PARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}\\..\\third_party")
+set(THIRD_PARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../third_party")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # SDL3
-add_subdirectory("${THIRD_PARTY_DIR}/SDL3"
-    "${CMAKE_CURRENT_BINARY_DIR}/SDL3-build"
-    EXCLUDE_FROM_ALL)
+add_subdirectory("${THIRD_PARTY_DIR}/SDL3" "${CMAKE_CURRENT_BINARY_DIR}/SDL3-build" EXCLUDE_FROM_ALL)
 
 include_directories("${THIRD_PARTY_DIR}/SDL3/include")
 link_libraries(SDL3::SDL3 SDL3::SDL3_test)
@@ -33,9 +32,10 @@ find_package(Vulkan REQUIRED)
 link_libraries(Vulkan::Vulkan)
 
 # FFmpeg
-find_package(FFMPEG REQUIRED)
+find_package(FFmpeg REQUIRED)
 include_directories(${FFMPEG_INCLUDE_DIRS})
 link_libraries(${FFMPEG_LIBRARIES})
+message(STATUS "FFMPEG_LIBRARIES: ${FFMPEG_LIBRARIES}")
 
 # target_include_directories(testffmpeg PRIVATE ${FFMPEG_INCLUDE_DIRS})
 set(TESTFFMPEG_SOURCES
@@ -44,6 +44,7 @@ set(TESTFFMPEG_SOURCES
 )
 add_executable(testffmpeg ${TESTFFMPEG_SOURCES})
 
+if (WIN32)
 # Copy the DLLs to the output directory
 add_custom_command(TARGET testffmpeg POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
@@ -55,3 +56,4 @@ add_custom_command(TARGET testffmpeg POST_BUILD
     $<TARGET_FILE:SDL3::SDL3>
     $<TARGET_FILE_DIR:testffmpeg>
 )
+endif()

@@ -16,6 +16,7 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include <string>
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
@@ -80,6 +81,17 @@ extern "C" {
 #include "testffmpeg_vulkan.h"
 
 #include "icon.h"
+
+std::string make_ffmpeg_error_string(int error)
+{
+    std::string error_string;
+    error_string.resize(AV_ERROR_MAX_STRING_SIZE);
+    av_strerror(error, error_string.data(), error_string.size());
+    return error_string;
+}
+
+#undef av_err2str
+#define av_err2str(errnum) make_ffmpeg_error_string(errnum).c_str()
 
 static SDL_Texture* sprite;
 static SDL_FRect* positions;
