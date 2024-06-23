@@ -8,7 +8,10 @@ Performance::Performance()
     Reset();
 }
 
-Performance::~Performance() {}
+Performance::~Performance()
+{
+    fprintf(stderr, "\n");
+}
 
 void Performance::Reset()
 {

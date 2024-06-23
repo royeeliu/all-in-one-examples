@@ -44,7 +44,6 @@ int main(int argc, char* argv[])
     };
 
     Performance performance;
-    uint64_t begin_ticks = SDL_GetTicks();
     uint64_t last_tickets = SDL_GetTicks();
     float position = 0.0f;
     float direction = 1.0f;
