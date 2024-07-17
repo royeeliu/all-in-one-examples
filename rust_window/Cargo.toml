@@ -1,0 +1,10 @@
+[package]
+name = "rust_window"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+winit = "0.30"
+softbuffer = "0.4"
+
+[dev-dependencies]
