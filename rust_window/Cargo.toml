@@ -9,3 +9,5 @@ winit = "0.30"
 [dev-dependencies]
 softbuffer = "0.4"
 num = "0.4"
+wgpu = "22.1"
+pollster = "0.3"
