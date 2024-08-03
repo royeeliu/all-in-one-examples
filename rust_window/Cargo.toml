@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 winit = "0.30"
-softbuffer = "0.4"
 
 [dev-dependencies]
+softbuffer = "0.4"
+num = "0.4"
