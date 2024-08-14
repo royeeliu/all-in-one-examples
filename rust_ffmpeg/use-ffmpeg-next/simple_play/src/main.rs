@@ -134,7 +134,7 @@ fn main() {
 
     ffmpeg::init().unwrap();
 
-    let mut ictx = ffmpeg::format::input(path).unwrap();
+    let ictx = ffmpeg::format::input(path).unwrap();
     let input = ictx
         .streams()
         .best(ffmpeg::media::Type::Video)
@@ -144,7 +144,7 @@ fn main() {
     let video_stream_index = input.index();
     let context_decoder =
         ffmpeg::codec::context::Context::from_parameters(input.parameters()).unwrap();
-    let mut decoder = context_decoder.decoder().video().unwrap();
+    let decoder = context_decoder.decoder().video().unwrap();
     println!(
         "\nVideo: {:?}, {}x{}",
         decoder.id(),

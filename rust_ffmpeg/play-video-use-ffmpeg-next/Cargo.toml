@@ -1,9 +1,0 @@
-[package]
-name = "play-video-use-ffmpeg-next"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-winit = "0.30"
-softbuffer = "0.4"
-ffmpeg-next = "7.0.4"

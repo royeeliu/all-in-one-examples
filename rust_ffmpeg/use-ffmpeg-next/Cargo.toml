@@ -1,7 +1,12 @@
-[package]
-name = "use-ffmpeg-next"
+[workspace]
+resolver = "2"
+members = ["hello", "simple_play"]
+
+[workspace.package]
 version = "0.1.0"
 edition = "2021"
 
-[dependencies]
+[workspace.dependencies]
 ffmpeg-next = "7.0.4"
+winit = "0.30"
+softbuffer = "0.4"

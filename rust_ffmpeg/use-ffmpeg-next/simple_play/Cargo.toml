@@ -1,0 +1,9 @@
+[package]
+name = "simple_play"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+ffmpeg-next.workspace = true
+winit.workspace = true
+softbuffer.workspace = true

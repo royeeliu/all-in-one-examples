@@ -1,7 +1,11 @@
-[package]
+[workspace]
+resolver = "2"
+members = ["hello"]
+
+[workspace.package]
 name = "use-ffmpeg-sys-next"
 version = "0.1.0"
 edition = "2021"
 
-[dependencies]
+[workspace.dependencies]
 ffmpeg-sys-next = "7.0.2"
