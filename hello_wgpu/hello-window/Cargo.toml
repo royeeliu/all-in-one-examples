@@ -1,0 +1,9 @@
+[package]
+name = "hello-window"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+wgpu.workspace = true
+winit.workspace = true
+pollster.workspace = true
