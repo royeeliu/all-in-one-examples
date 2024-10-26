@@ -9,11 +9,13 @@ use winit::{
     window::{Window, WindowId},
 };
 
+mod texture;
+
 #[repr(C)]
 #[derive(Copy, Clone, Debug, bytemuck::Pod, bytemuck::Zeroable)]
 struct Vertex {
     position: [f32; 3],
-    color: [f32; 3],
+    tex_coords: [f32; 2],
 }
 
 impl Vertex {
@@ -28,31 +30,37 @@ impl Vertex {
                     shader_location: 0,
                     format: wgpu::VertexFormat::Float32x3,
                 },
-                // color
+                // tex_coords
                 wgpu::VertexAttribute {
                     offset: std::mem::size_of::<[f32; 3]>() as wgpu::BufferAddress,
                     shader_location: 1,
-                    format: wgpu::VertexFormat::Float32x3,
+                    format: wgpu::VertexFormat::Float32x2,
                 },
             ],
         }
     }
 }
 
-const TRIANGLE_VERTICES: &[Vertex] = &[
+const VERTICES: &[Vertex] = &[
     Vertex {
-        position: [0.0, 0.5, 0.0],
-        color: [1.0, 0.0, 0.0],
+        position: [-0.5, 0.5, 0.0],
+        tex_coords: [0.0, 0.0],
     },
     Vertex {
         position: [-0.5, -0.5, 0.0],
-        color: [0.0, 1.0, 0.0],
+        tex_coords: [0.0, 1.0],
     },
     Vertex {
         position: [0.5, -0.5, 0.0],
-        color: [0.0, 0.0, 1.0],
+        tex_coords: [1.0, 1.0],
+    },
+    Vertex {
+        position: [0.5, 0.5, 0.0],
+        tex_coords: [1.0, 0.0],
     },
 ];
+
+const INDICES: &[u16] = &[0, 1, 2, 2, 3, 0];
 
 #[allow(dead_code)]
 struct WgpuContext {
@@ -63,7 +71,10 @@ struct WgpuContext {
     queue: wgpu::Queue,
     render_pipeline: wgpu::RenderPipeline,
     vertex_buffer: wgpu::Buffer,
-    num_vertices: u32,
+    index_buffer: wgpu::Buffer,
+    num_indices: u32,
+    diffuse_bind_group: wgpu::BindGroup,
+    diffuse_texture: texture::Texture,
 }
 
 impl WgpuContext {
@@ -101,15 +112,72 @@ impl WgpuContext {
         let surface_config = surface.get_default_config(&adapter, width, height).unwrap();
         surface.configure(&device, &surface_config);
 
+        let diffuse_bytes = include_bytes!("happy-tree.png");
+        let diffuse_texture =
+            texture::Texture::from_bytes(&device, &queue, diffuse_bytes, "happy-tree.png").unwrap();
+
         let shader = device.create_shader_module(wgpu::ShaderModuleDescriptor {
             label: None,
             source: wgpu::ShaderSource::Wgsl(include_str!("shaders.wgsl").into()),
         });
 
+        let vertex_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: None,
+            contents: bytemuck::cast_slice(VERTICES),
+            usage: wgpu::BufferUsages::VERTEX,
+        });
+
+        let index_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
+            label: None,
+            contents: bytemuck::cast_slice(INDICES),
+            usage: wgpu::BufferUsages::INDEX,
+        });
+        let num_indices = INDICES.len() as u32;
+
+        let texture_bind_group_layout =
+            device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
+                entries: &[
+                    wgpu::BindGroupLayoutEntry {
+                        binding: 0,
+                        visibility: wgpu::ShaderStages::FRAGMENT,
+                        ty: wgpu::BindingType::Texture {
+                            multisampled: false,
+                            view_dimension: wgpu::TextureViewDimension::D2,
+                            sample_type: wgpu::TextureSampleType::Float { filterable: true },
+                        },
+                        count: None,
+                    },
+                    wgpu::BindGroupLayoutEntry {
+                        binding: 1,
+                        visibility: wgpu::ShaderStages::FRAGMENT,
+                        // This should match the filterable field of the
+                        // corresponding Texture entry above.
+                        ty: wgpu::BindingType::Sampler(wgpu::SamplerBindingType::Filtering),
+                        count: None,
+                    },
+                ],
+                label: Some("texture_bind_group_layout"),
+            });
+
+        let diffuse_bind_group = device.create_bind_group(&wgpu::BindGroupDescriptor {
+            layout: &texture_bind_group_layout,
+            entries: &[
+                wgpu::BindGroupEntry {
+                    binding: 0,
+                    resource: wgpu::BindingResource::TextureView(&diffuse_texture.view), // CHANGED!
+                },
+                wgpu::BindGroupEntry {
+                    binding: 1,
+                    resource: wgpu::BindingResource::Sampler(&diffuse_texture.sampler), // CHANGED!
+                },
+            ],
+            label: Some("diffuse_bind_group"),
+        });
+
         let render_pipeline_layout =
             device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
                 label: None,
-                bind_group_layouts: &[],
+                bind_group_layouts: &[&texture_bind_group_layout],
                 push_constant_ranges: &[],
             });
 
@@ -151,13 +219,6 @@ impl WgpuContext {
             cache: None,
         });
 
-        let vertex_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
-            label: None,
-            contents: bytemuck::cast_slice(TRIANGLE_VERTICES),
-            usage: wgpu::BufferUsages::VERTEX,
-        });
-        let num_vertices = TRIANGLE_VERTICES.len() as u32;
-
         WgpuContext {
             surface,
             surface_config,
@@ -166,7 +227,10 @@ impl WgpuContext {
             queue,
             render_pipeline,
             vertex_buffer,
-            num_vertices,
+            index_buffer,
+            num_indices,
+            diffuse_bind_group,
+            diffuse_texture,
         }
     }
 
@@ -204,8 +268,10 @@ impl WgpuContext {
             });
 
             render_pass.set_pipeline(&self.render_pipeline);
+            render_pass.set_bind_group(0, &self.diffuse_bind_group, &[]);
             render_pass.set_vertex_buffer(0, self.vertex_buffer.slice(..));
-            render_pass.draw(0..self.num_vertices, 0..1);
+            render_pass.set_index_buffer(self.index_buffer.slice(..), wgpu::IndexFormat::Uint16);
+            render_pass.draw_indexed(0..self.num_indices, 0, 0..1);
         }
         self.queue.submit(Some(encoder.finish()));
         texture.present();

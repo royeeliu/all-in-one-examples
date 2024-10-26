@@ -1,0 +1,13 @@
+[package]
+name = "hello-texture"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+wgpu.workspace = true
+winit.workspace = true
+pollster.workspace = true
+env_logger.workspace = true
+bytemuck.workspace = true
+image.workspace = true
+anyhow.workspace = true
