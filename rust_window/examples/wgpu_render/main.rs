@@ -9,20 +9,20 @@ use winit::{
 };
 
 #[allow(dead_code)]
-struct WgpuContext<'window> {
-    surface: wgpu::Surface<'window>,
+struct WgpuContext {
+    surface: wgpu::Surface<'static>,
     surface_config: wgpu::SurfaceConfiguration,
     adapter: wgpu::Adapter,
     device: wgpu::Device,
     queue: wgpu::Queue,
 }
 
-impl<'window> WgpuContext<'window> {
+impl WgpuContext {
     pub fn new(window: Arc<Window>) -> Self {
         pollster::block_on(WgpuContext::new_async(window))
     }
 
-    pub async fn new_async(window: Arc<Window>) -> WgpuContext<'window> {
+    pub async fn new_async(window: Arc<Window>) -> WgpuContext {
         let instance = wgpu::Instance::default();
         println!("WGPU instance created.");
         let surface = instance.create_surface(window.clone()).unwrap();
@@ -97,12 +97,12 @@ impl<'window> WgpuContext<'window> {
 }
 
 #[derive(Default)]
-struct App<'window> {
+struct App {
     window: Option<Arc<Window>>,
-    context: Option<WgpuContext<'window>>,
+    context: Option<WgpuContext>,
 }
 
-impl<'window> ApplicationHandler for App<'window> {
+impl ApplicationHandler for App {
     fn resumed(&mut self, event_loop: &ActiveEventLoop) {
         println!("Resumed");
         if self.window.is_none() {
