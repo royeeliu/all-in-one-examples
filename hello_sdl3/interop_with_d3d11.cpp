@@ -26,7 +26,7 @@ ComPtr<ID3D11Texture2D> CreateTexture2D(ID3D11Device* d3d11_device, int width, i
     ComPtr<ID3D11Texture2D> texture;
     HRESULT hr = d3d11_device->CreateTexture2D(&desc, nullptr, &texture);
     if (FAILED(hr)) {
-        SDL_Log("Create texture failed: 0x%08X", hr);
+        SDL_Log("Create texture failed: 0x%08X", static_cast<uint32_t>(hr));
         return nullptr;
     }
 
@@ -36,7 +36,7 @@ ComPtr<ID3D11Texture2D> CreateTexture2D(ID3D11Device* d3d11_device, int width, i
 int main(int argc, char* argv[])
 {
     SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (!SDL_Init(SDL_INIT_VIDEO)) {
         SDL_Log("SDL_Init failed: %s", SDL_GetError());
         return -1;
     }
@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
     SDL_SetRenderVSync(renderer, vsync);
     SDL_Log("VSync: %d", vsync);
 
-    ComPtr<ID3D11Device> d3d11_device = static_cast<ID3D11Device*>(SDL_GetProperty(
+    ComPtr<ID3D11Device> d3d11_device = static_cast<ID3D11Device*>(SDL_GetPointerProperty(
         SDL_GetRendererProperties(renderer), SDL_PROP_RENDERER_D3D11_DEVICE_POINTER, nullptr));
     if (!d3d11_device) {
         SDL_Log("Get D3D11 device failed: %s", SDL_GetError());
@@ -91,7 +91,8 @@ int main(int argc, char* argv[])
     SDL_SetNumberProperty(props, SDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER, 2);
     SDL_SetNumberProperty(props, SDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER, 2);
     SDL_SetNumberProperty(props, SDL_PROP_TEXTURE_CREATE_FORMAT_NUMBER, SDL_PIXELFORMAT_ARGB8888);
-    SDL_SetProperty(props, SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER, d3d11_texture.Get());
+    SDL_SetPointerProperty(props, SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER,
+                           d3d11_texture.Get());
     SDL_Texture* texture = SDL_CreateTextureWithProperties(renderer, props);
     SDL_DestroyProperties(props);
 

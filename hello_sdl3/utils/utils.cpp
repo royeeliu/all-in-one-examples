@@ -11,7 +11,7 @@ void PrintSupportedRenderDrivers()
 
 void PrintSupportedTextureFormats(SDL_Renderer* renderer)
 {
-    SDL_PixelFormatEnum* texture_format = static_cast<SDL_PixelFormatEnum*>(SDL_GetProperty(
+    SDL_PixelFormat* texture_format = static_cast<SDL_PixelFormat*>(SDL_GetPointerProperty(
         SDL_GetRendererProperties(renderer), SDL_PROP_RENDERER_TEXTURE_FORMATS_POINTER, nullptr));
     int index = 0;
     while (texture_format && *texture_format != SDL_PIXELFORMAT_UNKNOWN) {

@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 {
     SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
 
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (!SDL_Init(SDL_INIT_VIDEO)) {
         SDL_Log("SDL_Init failed: %s", SDL_GetError());
         return -1;
     }
@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
         255, 0,   0,   255,  //
         0,   255, 255, 255   //
     };
-    SDL_Surface* surface = SDL_CreateSurfaceFrom(pixels, 2, 2, 4 * 2, SDL_PIXELFORMAT_ARGB8888);
+    SDL_Surface* surface = SDL_CreateSurfaceFrom(2, 2, SDL_PIXELFORMAT_ARGB8888, pixels, 4 * 2);
     if (!surface) {
         SDL_Log("Create surface failed: %s", SDL_GetError());
         return -1;
